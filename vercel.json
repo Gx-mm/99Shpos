@@ -1,0 +1,30 @@
+{
+  "routes": [
+
+    { "src": "^/$", "dest": "/index.html" },
+
+    { "src": "^/home$", "dest": "/home.html" },
+    { "src": "^/login$", "dest": "/login.html" },
+    { "src": "^/orders$", "dest": "/orders.html" },
+    { "src": "^/wishlist$", "dest": "/wishlist.html" },
+    { "src": "^/profile$", "dest": "/profile.html" },
+    { "src": "^/project$", "dest": "/project.html" },
+    { "src": "^/buy$", "dest": "/buy.html" },
+
+    { "src": "^/14320$", "dest": "/adp.html" },
+
+    { "src": "^/home\\.html$", "status": 301, "headers": { "Location": "/home" } },
+    { "src": "^/login\\.html$", "status": 301, "headers": { "Location": "/login" } },
+    { "src": "^/orders\\.html$", "status": 301, "headers": { "Location": "/orders" } },
+    { "src": "^/wishlist\\.html$", "status": 301, "headers": { "Location": "/wishlist" } },
+    { "src": "^/profile\\.html$", "status": 301, "headers": { "Location": "/profile" } },
+    { "src": "^/project\\.html$", "status": 301, "headers": { "Location": "/project" } },
+    { "src": "^/buy\\.html$", "status": 301, "headers": { "Location": "/buy" } },
+
+    { "src": "^/adp\\.html$", "status": 301, "headers": { "Location": "/14320" } },
+
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
+
+  ]
+}
