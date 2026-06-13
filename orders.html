@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Orders</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f5f7fb;padding:15px;padding-bottom:85px}
+h1{margin-bottom:15px}
+.card{background:#fff;border-radius:18px;padding:15px;margin-bottom:15px;box-shadow:0 4px 15px rgba(0,0,0,.08)}
+.row{display:flex;gap:15px}
+.img{width:100px;height:100px;object-fit:cover;border-radius:12px}
+.name{font-size:20px;font-weight:700}
+.meta{color:#666;margin-top:6px}
+.status{margin-top:10px;font-weight:700}
+.green{color:#16a34a}.blue{color:#2563eb}.orange{color:#ea580c}.red{color:#dc2626}
+.empty{text-align:center;padding:40px;color:#666}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:65px;background:#fff;display:flex;justify-content:space-around;align-items:center;box-shadow:0 -4px 15px rgba(0,0,0,.12)}
+.bottom-nav a{text-decoration:none;color:#333;font-size:12px;text-align:center}
+.bottom-nav span{display:block;font-size:24px}
+</style>
+</head>
+<body>
+
+<h1>📦 My Orders</h1>
+<div id="ordersContainer"><div class="empty">Loading orders...</div></div>
+
+<div class="bottom-nav">
+<a href="home.html"><span>🏠</span>Home</a>
+<a href="wish.html"><span>❤️</span>Wishlist</a>
+<a href="orders.html"><span>📦</span>Orders</a>
+<a href="profile.html"><span>👤</span>Profile</a>
+</div>
+
+<script>
+const client=supabase.createClient(
+"https://xjiwwapiqszpnoqaripq.supabase.co",
+"sb_publishable_TJQTU1yv270qrVAEW6Ygwg_HxRtmCTe"
+);
+
+function statusInfo(status){
+if(status==="Pending") return ["🟢 Order Placed","green"];
+if(status==="Processing") return ["🔵 Processing","blue"];
+if(status==="Shipped") return ["🟠 Shipped","orange"];
+if(status==="Delivered") return ["🟢 Delivered","green"];
+if(status==="Cancelled") return ["🔴 Cancelled","red"];
+return [status||"Unknown","green"];
+}
+
+async function loadOrders(){
+const userId=localStorage.getItem("userId");
+const box=document.getElementById("ordersContainer");
+
+const {data,error}=await client
+.from("orders")
+.select("*")
+.eq("user_id",userId)
+.order("created_at",{ascending:false});
+
+if(error){
+box.innerHTML='<div class="empty">Failed to load orders</div>';
+return;
+}
+
+if(!data || !data.length){
+box.innerHTML='<div class="empty">No orders found</div>';
+return;
+}
+
+box.innerHTML='';
+
+data.forEach(order=>{
+const [txt,cls]=statusInfo(order.order_status);
+
+box.innerHTML += `
+<div class="card">
+<div class="row">
+<img class="img" src="${order.product_image||''}">
+<div>
+<div class="name">${order.product_name||''}</div>
+<div class="meta">Order ID: #${order.id}</div>
+<div class="meta">Qty: ${order.quantity||1}</div>
+<div class="meta">Price: ₹${order.price||0}</div>
+<div class="meta">Total: ₹${order.total_amount||0}</div>
+<div class="meta">Customer: ${order.coustomer_name||''}</div>
+<div class="meta">Phone: ${order.coustomer_phone||''}</div>
+<div class="meta">Payment: ${order.payment_method||''}</div>
+<div class="status ${cls}">${txt}</div>
+<div class="meta">${new Date(order.created_at).toLocaleString()}</div>
+</div>
+</div>
+</div>`;
+});
+}
+
+loadOrders();
+</script>
+</body>
+</html>

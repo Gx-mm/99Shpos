@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#fff;
+overflow-x:hidden;
+}
+
+.header{
+background:#dce9ff;
+padding:15px;
+display:flex;
+align-items:center;
+gap:12px;
+position:sticky;
+top:0;
+z-index:100;
+width:100%;
+}
+
+.search{
+flex:1;
+min-width:0;
+width:100%;
+}
+.cart{
+font-size:28px;
+position:relative;
+}
+
+.badge{
+position:absolute;
+top:-8px;
+right:-8px;
+background:red;
+color:#fff;
+width:22px;
+height:22px;
+border-radius:50%;
+font-size:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.filters{
+display:flex;
+gap:10px;
+padding:15px;
+overflow-x:auto;
+overflow-y:hidden;
+scrollbar-width:none;
+}
+
+.filters::-webkit-scrollbar{
+display:none;
+}
+
+.filter-btn{
+border:1px solid #ddd;
+padding:12px 18px;
+border-radius:15px;
+background:#fff;
+white-space:nowrap;
+font-size:16px;
+}
+
+.products{
+padding:10px;
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:10px;
+width:100%;
+}
+
+.card{
+width:100%;
+min-width:0;
+}
+.card{
+background:#fff;
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.img-wrap{
+position:relative;
+background:#f5f5f5;
+}
+
+.img-wrap img{
+width:100%;
+height:260px;
+object-fit:cover;
+}
+
+.ad{
+position:absolute;
+top:10px;
+left:10px;
+background:#eee;
+padding:5px 8px;
+border-radius:8px;
+font-size:12px;
+}
+
+.wishlist{
+position:absolute;
+right:10px;
+top:10px;
+background:#fff;
+width:40px;
+height:40px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:20px;
+}
+
+.rating{
+position:absolute;
+left:10px;
+bottom:10px;
+background:#fff;
+padding:8px 12px;
+border-radius:12px;
+font-size:14px;
+font-weight:600;
+}
+
+.info{
+padding:12px;
+}
+
+.brand{
+font-size:28px;
+font-weight:700;
+}
+
+.title{
+color:#666;
+margin-top:5px;
+}
+
+.price-row{
+margin-top:10px;
+}
+
+.discount{
+color:#20a545;
+font-weight:700;
+font-size:22px;
+}
+
+.old{
+text-decoration:line-through;
+color:#888;
+font-size:22px;
+margin-left:5px;
+}
+
+.new{
+font-size:34px;
+font-weight:700;
+margin-top:4px;
+}
+
+.offer{
+color:#0d47a1;
+font-size:18px;
+margin-top:5px;
+}
+
+.delivery{
+margin-top:10px;
+font-size:18px;
+}
+
+@media(max-width:600px){
+
+.brand{
+font-size:18px;
+}
+
+.new{
+font-size:24px;
+}
+
+.img-wrap img{
+height:180px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<div class="back">←</div>
+<input class="search" placeholder="Shirt">
+<div class="cart">
+🛒
+<div class="badge">5</div>
+</div>
+</div>
+
+<div class="filters">
+<div class="filter-btn">Sort ▼</div>
+<div class="filter-btn">Filter ⚙</div>
+<div class="filter-btn">🔥 Latest Trends</div>
+<div class="filter-btn">⭐ Top Rated</div>
+</div>
+
+<div class="products" id="productsContainer"></div>
+
+
+
+
+
+
+<script src=
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="home.js"></script>
+
+
+<style>
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+height:65px;
+background:#fff;
+display:flex;
+justify-content:space-around;
+align-items:center;
+box-shadow:0 -4px 15px rgba(0,0,0,.12);
+z-index:9999;
+}
+.bottom-nav a{
+text-decoration:none;
+color:#333;
+font-size:12px;
+font-weight:600;
+text-align:center;
+}
+.bottom-nav span{
+display:block;
+font-size:24px;
+margin-bottom:2px;
+}
+body{
+padding-bottom:80px;
+}
+</style>
+
+<div class="bottom-nav">
+<a href="home.html"><span>🏠</span>Home</a>
+<a href="wishlist.html"><span>❤️</span>Wishlist</a>
+<a href="orders.html"><span>📦</span>Orders</a>
+<a href="profile.html"><span>👤</span>Profile</a>
+</div>
+<script>
+history.pushState(null, null, location.href);
+
+window.addEventListener("popstate", function () {
+    history.pushState(null, null, location.href);
+});
+
+
+if(
+!localStorage.getItem("userId") &&
+localStorage.getItem("loggedIn") !== "true"
+){
+    window.location.replace("login.html");
+}
+
+</script>
+</body>
+</html>

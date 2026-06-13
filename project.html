@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>99Shops Product Details</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f5f5f5}
+.container{max-width:1200px;margin:auto;padding:15px}
+.product-section{display:grid;grid-template-columns:1fr 1fr;gap:20px;background:#fff;padding:20px;border-radius:12px}
+.main-image{width:100%;border-radius:12px}
+.thumb-row{display:flex;gap:10px;margin-top:10px}
+.thumb{width:70px;height:70px;object-fit:cover;border-radius:8px}
+.brand{color:#666}
+.product-title{font-size:28px}
+.current-price{font-size:32px}
+.discount{color:green;font-weight:bold}
+.old-price{text-decoration:line-through;color:#777}
+.related-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.related-card{background:#fff;padding:10px;border-radius:10px;cursor:pointer}
+
+.action-buttons{
+display:flex;
+gap:12px;
+margin-top:20px;
+}
+
+.wishlist-btn,
+.buy-btn{
+flex:1;
+height:55px;
+border:none;
+border-radius:14px;
+font-size:18px;
+font-weight:700;
+cursor:pointer;
+}
+
+.wishlist-btn{
+background:#fff;
+border:2px solid #ff4d6d;
+color:#ff4d6d;
+}
+
+.buy-btn{
+background:linear-gradient(135deg,#2563eb,#1d4ed8);
+color:white;
+}
+.related-card img{width:100%;height:140px;object-fit:cover}
+@media(max-width:768px){.product-section{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<section class="product-section">
+<div>
+<img id="mainImage" class="main-image" src="" alt="Product">
+<div class="thumb-row" id="thumbRow"></div>
+</div>
+
+<div>
+<span class="brand" id="productBrand">Loading...</span>
+<h1 class="product-title" id="productTitle">Loading...</h1>
+<p id="productRating">⭐ 0</p>
+
+<div>
+<span class="discount" id="productDiscount">0% OFF</span>
+<span class="old-price" id="productOldPrice">₹0</span>
+<h2 class="current-price" id="productPrice">₹0</h2>
+</div>
+
+<p id="productDescription">Loading...</p>
+
+<div class="action-buttons">
+
+<button class="wishlist-btn">
+❤️ Wishlist
+</button>
+
+<button class="buy-btn" onclick="buyNow()">
+Buy Now
+</button>
+
+</div>
+
+</section>
+
+<h2>Similar Products</h2>
+<div class="related-grid" id="relatedProducts"></div>
+
+</div>
+
+<script>
+const SUPABASE_URL="https://xjiwwapiqszpnoqaripq.supabase.co";
+const SUPABASE_KEY="sb_publishable_TJQTU1yv270qrVAEW6Ygwg_HxRtmCTe";
+
+const client=window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+const params=new URLSearchParams(window.location.search);
+const productId=params.get("id");
+
+async function loadProduct(){
+
+const {data,error}=await client
+.from("products")
+.select("*")
+.eq("id",productId)
+.single();
+
+if(error){
+console.log(error);
+return;
+}
+
+document.getElementById("productBrand").textContent=data.category||"99Shops";
+document.getElementById("productTitle").textContent=data.name||"";
+document.getElementById("productRating").textContent="⭐ "+(data.rating||0);
+document.getElementById("productDiscount").textContent=(data.discount||0)+"% OFF";
+document.getElementById("productOldPrice").textContent="₹"+(data.old_price||0);
+document.getElementById("productPrice").textContent="₹"+(data.price||0);
+document.getElementById("productDescription").textContent=data.description||"";
+document.getElementById("mainImage").src=data.thumbnail||"";
+
+loadRelated();
+}
+
+
+function buyNow(){
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+const productId =
+params.get("id");
+
+window.location.href =
+`buy.html?id=${productId}`;
+
+}
+async function loadRelated(){
+
+const {data}=await client
+.from("products")
+.select("*")
+.limit(8);
+
+const box=document.getElementById("relatedProducts");
+
+data.forEach(p=>{
+box.innerHTML+=`
+<div class="related-card"
+onclick="location.href='project.html?id=${p.id}'">
+<img src="${p.thumbnail||''}">
+<h4>${p.name||''}</h4>
+<p>₹${p.price||0}</p>
+</div>`;
+});
+}
+
+loadProduct();
+</script>
+
+</body>
+</html>

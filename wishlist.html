@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Wishlist</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f1f3f6;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:15px;
+}
+
+.title{
+font-size:32px;
+font-weight:700;
+margin-bottom:20px;
+color:#212121;
+}
+
+.wishlist-card{
+background:#fff;
+border-radius:15px;
+padding:15px;
+margin-bottom:15px;
+display:flex;
+gap:15px;
+box-shadow:0 3px 10px rgba(0,0,0,.08);
+transition:.3s;
+}
+
+.wishlist-card:hover{
+transform:translateY(-3px);
+}
+
+.product-image{
+width:140px;
+height:160px;
+object-fit:cover;
+border-radius:10px;
+background:#f5f5f5;
+}
+
+.product-details{
+flex:1;
+}
+
+.brand{
+font-size:24px;
+font-weight:700;
+color:#212121;
+}
+
+.product-name{
+color:#666;
+font-size:16px;
+margin-top:5px;
+}
+
+.rating{
+margin-top:10px;
+display:inline-block;
+background:#26a541;
+color:white;
+padding:5px 10px;
+border-radius:5px;
+font-size:14px;
+font-weight:bold;
+}
+
+.price-row{
+margin-top:12px;
+display:flex;
+align-items:center;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.discount{
+color:#26a541;
+font-weight:700;
+font-size:22px;
+}
+
+.old-price{
+color:#878787;
+text-decoration:line-through;
+font-size:20px;
+}
+
+.new-price{
+font-size:30px;
+font-weight:700;
+color:#212121;
+}
+
+.delivery{
+margin-top:10px;
+font-size:15px;
+color:#212121;
+}
+
+.buttons{
+margin-top:15px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.remove-btn{
+background:#f5f5f5;
+border:none;
+padding:12px 25px;
+border-radius:8px;
+cursor:pointer;
+font-size:15px;
+font-weight:600;
+}
+
+.buy-btn{
+background:#fb641b;
+color:white;
+border:none;
+padding:12px 30px;
+border-radius:8px;
+cursor:pointer;
+font-size:15px;
+font-weight:600;
+}
+
+.summary{
+background:white;
+padding:20px;
+border-radius:15px;
+margin-top:20px;
+box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+
+.summary h2{
+margin-bottom:15px;
+}
+
+.summary-row{
+display:flex;
+justify-content:space-between;
+margin:12px 0;
+font-size:18px;
+}
+
+.green{
+color:#26a541;
+font-weight:bold;
+}
+
+.total{
+font-size:24px;
+font-weight:bold;
+border-top:1px solid #ddd;
+padding-top:15px;
+margin-top:15px;
+}
+
+@media(max-width:768px){
+
+.title{
+font-size:26px;
+}
+
+.wishlist-card{
+flex-direction:column;
+}
+
+.product-image{
+width:100%;
+height:250px;
+}
+
+.brand{
+font-size:20px;
+}
+
+.new-price{
+font-size:24px;
+}
+
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1 class="title">❤️ My Wishlist</h1>
+
+<div class="wishlist-card">
+
+<img class="product-image"
+src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600"
+alt="Shirt">
+
+<div class="product-details">
+
+<div class="brand">RARE RABBIT</div>
+
+<div class="product-name">
+Premium Cotton Regular Fit Shirt
+</div>
+
+<div class="rating">
+⭐ 4.5 | 1,245 Ratings
+</div>
+
+<div class="price-row">
+<span class="discount">64% OFF</span>
+<span class="old-price">₹2799</span>
+<span class="new-price">₹999</span>
+</div>
+
+<div class="delivery">
+🚚 Express Delivery Tomorrow
+</div>
+
+<div class="buttons">
+<button class="remove-btn">Remove</button>
+<button class="buy-btn">Buy Now</button>
+</div>
+
+</div>
+
+</div>
+
+<div class="wishlist-card">
+
+<img class="product-image"
+src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600"
+alt="Shirt">
+
+<div class="product-details">
+
+<div class="brand">URBAN STYLE</div>
+
+<div class="product-name">
+Men Solid White Premium Shirt
+</div>
+
+<div class="rating">
+⭐ 4.7 | 892 Ratings
+</div>
+
+<div class="price-row">
+<span class="discount">58% OFF</span>
+<span class="old-price">₹1999</span>
+<span class="new-price">₹839</span>
+</div>
+
+<div class="delivery">
+🚚 Express Delivery Tomorrow
+</div>
+
+<div class="buttons">
+<button class="remove-btn">Remove</button>
+<button class="buy-btn">Buy Now</button>
+</div>
+
+</div>
+
+</div>
+
+<div class="summary">
+
+<h2>Wishlist Summary</h2>
+
+<div class="summary-row">
+<span>Total Items</span>
+<span>2</span>
+</div>
+
+<div class="summary-row">
+<span>Total Price</span>
+<span>₹4,798</span>
+</div>
+
+<div class="summary-row">
+<span>Total Savings</span>
+<span class="green">₹2,960</span>
+</div>
+
+<div class="summary-row total">
+<span>Estimated Total</span>
+<span>₹1,838</span>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+document.querySelectorAll(".remove-btn").forEach(btn=>{
+
+btn.addEventListener("click",()=>{
+
+btn.closest(".wishlist-card").remove();
+
+});
+
+});
+
+document.querySelectorAll(".buy-btn").forEach(btn=>{
+
+btn.addEventListener("click",()=>{
+
+alert("Proceeding to Checkout");
+
+});
+
+});
+
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:65px;background:#fff;display:flex;justify-content:space-around;align-items:center;box-shadow:0 -4px 15px rgba(0,0,0,.12);z-index:9999}
+.bottom-nav a{text-decoration:none;color:#333;font-size:12px;font-weight:600;text-align:center}
+.bottom-nav span{display:block;font-size:24px;margin-bottom:2px}
+body{padding-bottom:85px}
+</style>
+
+<script>
+const SUPABASE_URL="https://xjiwwapiqszpnoqaripq.supabase.co";
+const SUPABASE_KEY="sb_publishable_TJQTU1yv270qrVAEW6Ygwg_HxRtmCTe";
+const client=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+async function loadWishlist(){
+const userId=localStorage.getItem("userId");
+if(!userId) return;
+
+const container=document.querySelector(".container");
+const oldCards=container.querySelectorAll(".wishlist-card,.summary");
+oldCards.forEach(x=>x.remove());
+
+const {data:wishlist}=await client
+.from("wishlist")
+.select("id,product_id")
+.eq("user_id",userId);
+
+if(!wishlist || !wishlist.length){
+container.insertAdjacentHTML("beforeend","<h2>No wishlist items found</h2>");
+return;
+}
+
+let total=0, oldTotal=0;
+
+for(const item of wishlist){
+const {data:product}=await client
+.from("products")
+.select("*")
+.eq("id",item.product_id)
+.single();
+
+if(!product) continue;
+
+total += Number(product.price||0);
+oldTotal += Number(product.old_price||0);
+
+container.insertAdjacentHTML("beforeend",`
+<div class="wishlist-card">
+<img class="product-image" src="${product.thumbnail||''}">
+<div class="product-details">
+<div class="brand">${product.name||''}</div>
+<div class="product-name">${product.description||''}</div>
+<div class="rating">⭐ ${product.rating||4.5}</div>
+<div class="price-row">
+<span class="discount">${product.discount||0}% OFF</span>
+<span class="old-price">₹${product.old_price||0}</span>
+<span class="new-price">₹${product.price||0}</span>
+</div>
+<div class="buttons">
+<button class="remove-btn" onclick="removeWish(${item.id})">Remove</button>
+<button class="buy-btn" onclick="location.href='buy.html?id=${product.id}'">Buy Now</button>
+</div>
+</div>
+</div>`);
+}
+
+container.insertAdjacentHTML("beforeend",`
+<div class="summary">
+<h2>Wishlist Summary</h2>
+<div class="summary-row"><span>Total Items</span><span>${wishlist.length}</span></div>
+<div class="summary-row"><span>Total Price</span><span>₹${oldTotal}</span></div>
+<div class="summary-row total"><span>Estimated Total</span><span>₹${total}</span></div>
+</div>`);
+}
+
+async function removeWish(id){
+await client.from("wishlist").delete().eq("id",id);
+location.reload();
+}
+
+window.addEventListener("load",loadWishlist);
+</script>
+
+<div class="bottom-nav">
+<a href="home.html"><span>🏠</span>Home</a>
+<a href="wishlist.html"><span>❤️</span>Wishlist</a>
+<a href="orders.html"><span>📦</span>Orders</a>
+<a href="profile.html"><span>👤</span>Profile</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Product - 99Shops</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+-webkit-tap-highlight-color:transparent;
+}
+
+body{
+background:#f4f6f9;
+padding:15px;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+}
+
+.card{
+background:#fff;
+padding:20px;
+border-radius:20px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+h1{
+margin-bottom:20px;
+color:#0d47a1;
+}
+
+label{
+display:block;
+margin-top:15px;
+margin-bottom:6px;
+font-weight:600;
+}
+
+input,
+textarea,
+select{
+width:100%;
+padding:12px;
+border:1px solid #ddd;
+border-radius:12px;
+outline:none;
+}
+
+textarea{
+height:120px;
+resize:none;
+}
+
+button{
+width:100%;
+margin-top:20px;
+padding:14px;
+border:none;
+border-radius:14px;
+background:#0d47a1;
+color:#fff;
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+}
+
+button:disabled{
+opacity:.6;
+}
+
+.success{
+display:none;
+margin-top:15px;
+padding:12px;
+background:#d4edda;
+color:#155724;
+border-radius:12px;
+}
+
+.preview{
+margin-top:15px;
+width:120px;
+height:120px;
+border-radius:12px;
+object-fit:cover;
+border:1px solid #ddd;
+display:none;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>Add Product</h1>
+
+<form id="productForm">
+
+<label>Name</label>
+<input type="text" id="name" required>
+
+<label>Slug</label>
+<input type="text" id="slug" required>
+
+<label>Description</label>
+<textarea id="description"></textarea>
+
+<label>Price</label>
+<input type="number" id="price" required>
+
+<label>Old Price</label>
+<input type="number" id="old_price">
+
+<label>Discount</label>
+<input type="number" id="discount">
+
+<label>Brand</label>
+<input type="text" id="brand">
+
+<label>Category</label>
+<input type="text" id="category">
+
+<label>Stock</label>
+<input type="number" id="stock">
+
+<label>Rating</label>
+<input type="number" step="0.1" id="rating">
+
+<label>Product Image</label>
+<input type="file" id="image" accept="image/*">
+
+<img id="preview" class="preview">
+
+<label>Thumbnail URL (Auto Filled)</label>
+<input type="text" id="thumbnail" readonly>
+
+<label>Status</label>
+<select id="status">
+<option value="active">Active</option>
+<option value="inactive">Inactive</option>
+</select>
+
+<label>Featured</label>
+<select id="featured">
+<option value="true">True</option>
+<option value="false">False</option>
+</select>
+
+<button type="submit" id="submitBtn">
+Add Product
+</button>
+
+<div class="success" id="successBox">
+Product Added Successfully ✅
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL =
+"https://xjiwwapiqszpnoqaripq.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_TJQTU1yv270qrVAEW6Ygwg_HxRtmCTe";
+
+const client =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+const imageInput =
+document.getElementById("image");
+
+const preview =
+document.getElementById("preview");
+
+let imageUrl = "";
+
+imageInput.addEventListener(
+"change",
+async function(){
+
+const file =
+this.files[0];
+
+if(!file) return;
+
+preview.src =
+URL.createObjectURL(file);
+
+preview.style.display =
+"block";
+
+const fileName =
+Date.now() +
+"-" +
+file.name;
+
+const { error } =
+await client.storage
+.from("Product")
+.upload(
+fileName,
+file
+);
+
+if(error){
+
+console.log(error);
+
+alert(error.message);
+
+return;
+}
+
+const {
+data
+}
+=
+client.storage
+.from("Product")
+.getPublicUrl(
+fileName
+);
+
+imageUrl =
+data.publicUrl;
+
+document.getElementById(
+"thumbnail"
+).value =
+imageUrl;
+
+}
+);
+
+document
+.getElementById(
+"productForm"
+)
+.addEventListener(
+"submit",
+async function(e){
+
+e.preventDefault();
+
+const btn =
+document.getElementById(
+"submitBtn"
+);
+
+btn.disabled = true;
+btn.innerText =
+"Uploading...";
+
+const product = {
+
+name:
+document.getElementById("name").value,
+
+slug:
+document.getElementById("slug").value,
+
+description:
+document.getElementById("description").value,
+
+price:
+Number(
+document.getElementById("price").value
+),
+
+old_price:
+Number(
+document.getElementById("old_price").value
+),
+
+discount:
+Number(
+document.getElementById("discount").value
+),
+
+brand:
+document.getElementById("brand").value,
+
+category:
+document.getElementById("category").value,
+
+stock:
+Number(
+document.getElementById("stock").value
+),
+
+rating:
+Number(
+document.getElementById("rating").value
+),
+
+thumbnail:
+imageUrl,
+
+status:
+document.getElementById("status").value,
+
+featured:
+document.getElementById("featured").value
+=== "true"
+
+};
+
+const { error } =
+await client
+.from("products")
+.insert([product]);
+
+btn.disabled = false;
+btn.innerText =
+"Add Product";
+
+if(error){
+
+alert(
+error.message
+);
+
+return;
+}
+
+document.getElementById(
+"successBox"
+).style.display =
+"block";
+
+document.getElementById(
+"productForm"
+).reset();
+
+preview.style.display =
+"none";
+
+document.getElementById(
+"thumbnail"
+).value = "";
+
+imageUrl = "";
+
+}
+);
+
+</script>
+
+</body>
+</html>

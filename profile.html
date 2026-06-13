@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Profile</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#f5f7fb;padding-bottom:85px}
+.card{background:#fff;margin:15px;padding:20px;border-radius:18px;box-shadow:0 4px 15px rgba(0,0,0,.08)}
+.name{font-size:28px;font-weight:700}
+.info{color:#666;margin-top:8px}
+.rowbtn{display:block;width:100%;padding:16px;border:none;background:#fff;text-align:left;border-radius:14px;margin:10px 0;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+#addressBox{line-height:1.8}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center}
+.modal-content{background:#fff;width:95%;max-width:500px;padding:20px;border-radius:18px}
+input,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px}
+.save{width:100%;padding:14px;background:#2874f0;color:#fff;border:none;border-radius:10px}
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+height:65px;
+background:#fff;
+display:flex;
+justify-content:space-around;
+align-items:center;
+box-shadow:0 -4px 15px rgba(0,0,0,.12);
+z-index:9999;
+}
+.bottom-nav a{
+text-decoration:none;
+color:#333;
+font-size:12px;
+font-weight:600;
+text-align:center;
+}
+.bottom-nav span{display:block;font-size:24px}
+</style>
+</head>
+<body>
+
+<div class="card">
+<div class="name" id="userName">Loading...</div>
+<div class="info" id="userEmail"></div>
+<div class="info" id="userPhone"></div>
+</div>
+
+<div class="card">
+<h3>Saved Address</h3>
+<div id="addressBox">No address found</div>
+</div>
+
+<div class="card">
+<button class="rowbtn" onclick="location.href='wishlist.html">❤️ My Wishlist</button>
+<button class="rowbtn" onclick="location.href='orders.html'">📦 My Orders</button>
+<button class="rowbtn" onclick="openModal()">📍 Manage Address</button>
+<button class="rowbtn" onclick="location.href='c.html'">🔐 Change Password</button>
+<button class="rowbtn" onclick="logout()">🚪 Logout</button>
+</div>
+
+<div class="modal" id="modal">
+<div class="modal-content">
+<h3>Manage Address</h3>
+<input id="full_name" placeholder="Full Name">
+<input id="phone" placeholder="Phone">
+<textarea id="address" placeholder="Address"></textarea>
+<input id="city" placeholder="City">
+<input id="state" placeholder="State">
+<input id="pincode" placeholder="Pincode">
+<input id="country" placeholder="Country">
+<button class="save" onclick="saveAddress()">Save Address</button>
+</div>
+</div>
+
+<div class="bottom-nav">
+<a href="home.html"><span>🏠</span>Home</a>
+<a href="wishlist.html"><span>❤️</span>Wishlist</a>
+<a href="orders.html"><span>📦</span>Orders</a>
+<a href="profile.html"><span>👤</span>Profile</a>
+</div>
+
+<script>
+const client=supabase.createClient(
+"https://xjiwwapiqszpnoqaripq.supabase.co",
+"sb_publishable_TJQTU1yv270qrVAEW6Ygwg_HxRtmCTe"
+);
+
+const uid=localStorage.getItem("userId");
+
+async function loadProfile(){
+const {data:user}=await client.from("users").select("*").eq("id",uid).single();
+if(user){
+userName.innerText=user.name||"";
+userEmail.innerText=user.email||"";
+userPhone.innerText=user.phone||"";
+}
+const {data:a}=await client.from("addresses").select("*").eq("user_id",uid).single();
+if(a){
+full_name.value=a.full_name||"";
+phone.value=a.phone||"";
+address.value=a.address||"";
+city.value=a.city||"";
+state.value=a.state||"";
+pincode.value=a.pincode||"";
+country.value=a.country||"";
+addressBox.innerHTML=`${a.full_name}<br>${a.phone}<br>${a.address}<br>${a.city}, ${a.state} ${a.pincode}<br>${a.country}`;
+}
+}
+
+function openModal(){modal.style.display="flex";}
+window.onclick=e=>{if(e.target===modal)modal.style.display="none";}
+
+async function saveAddress(){
+const payload={user_id:uid,full_name:full_name.value,phone:phone.value,address:address.value,city:city.value,state:state.value,pincode:pincode.value,country:country.value};
+const {data}=await client.from("addresses").select("id").eq("user_id",uid);
+if(data&&data.length){
+await client.from("addresses").update(payload).eq("user_id",uid);
+}else{
+await client.from("addresses").insert([payload]);
+}
+location.reload();
+}
+
+function logout(){
+localStorage.clear();
+location.href="login.html";
+}
+
+loadProfile();
+</script>
+</body>
+</html>
